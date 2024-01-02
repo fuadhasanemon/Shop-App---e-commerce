@@ -41,3 +41,40 @@ export const getSingleProductBrand = async (req, res, next) => {
     next(error);
   }
 };
+
+export const deleteProductBrand = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const deleteBrand = await Brand.findByIdAndDelete(id);
+    res.status(200).json({
+      brands: deleteBrand,
+      message: "Barand deleted succesfully"
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateProductBrand = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { name, slug, photo } = req.body;
+    const updateBrand = await Brand.findByIdAndUpdate(
+      id,
+      {
+        name,
+        slug,
+        photo
+      },
+      {
+        new: true
+      }
+    );
+    res.status(200).json({
+      brands: updateBrand,
+      message: "Barand updated succesfully"
+    });
+  } catch (error) {
+    next(error);
+  }
+};
