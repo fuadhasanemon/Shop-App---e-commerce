@@ -113,28 +113,55 @@ export const updateProduct = async (req, res, next) => {
       categories,
       tags,
       brands,
-      photo
+      del_gall
     } = req.body;
-    const data = await Product.findByIdAndUpdate(id, {
-      name,
-      regular_price,
-      sale_price,
-      stock,
-      short_desc,
-      long_desc,
-      categories,
-      tags,
-      brands,
-      photo
-    });
 
-    // delete related files
-    unlinkSync(`api/public/products/${data.photo}`);
+    // get edit product
+    const product = await Product.findById(id);
 
-    // delete gallery files
-    data.gallery.forEach(item => {
-      unlinkSync(`api/public/products/${item}`);
-    });
+    // product photo update
+    let photo = product.photo;
+    if (req.files["product-photo"]) {
+      photo = req.files["product-photo"][0].filename;
+      unlinkSync(`api/public/products/${product.photo}`);
+    }
+
+    if (del_gall) {
+      del_gall.forEach(item => {
+        unlinkSync(`api/public/products/${item}`);
+      });
+    }
+
+    // product gallery photo update
+    let gallery_old = product.gallery.filter(data => !del_gall.includes(data));
+    let gallery_new = [];
+    if (req.files["product-gallery-photo"]) {
+      req.files["product-gallery-photo"].forEach(item => {
+        gallery_new.push(item.filename);
+      });
+    }
+
+    const final_gallery = gallery_old.concat(gallery_new);
+
+    const data = await Product.updateOne(
+      {
+        name,
+        slug: createSlug(name),
+        regular_price,
+        sale_price,
+        stock,
+        short_desc,
+        long_desc,
+        categories,
+        tags,
+        brands,
+        photo,
+        gallery: final_gallery
+      },
+      {
+        new: true
+      }
+    );
 
     res.status(200).json({
       product: data,
