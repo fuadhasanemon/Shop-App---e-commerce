@@ -2,6 +2,7 @@ import express from "express";
 import colors from "colors";
 import dotenv from "dotenv";
 import cors from "cors";
+import productRoute from "./routes/product.js";
 import productCategoryRoute from "./routes/productCategory.js";
 import productBrandRoute from "./routes/productBrand.js";
 import productTageRoute from "./routes/productTageRoute.js";
@@ -21,6 +22,7 @@ app.use(cors());
 app.use(express.static("api/public"));
 
 // routes
+app.use("/api/v1/product", productRoute);
 app.use("/api/v1/product", productCategoryRoute);
 app.use("/api/v1/product", productBrandRoute);
 app.use("/api/v1/product", productTageRoute);
