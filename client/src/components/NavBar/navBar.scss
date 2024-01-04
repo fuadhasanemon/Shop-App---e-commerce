@@ -1,0 +1,19 @@
+.menu {
+    background-color: #E95C18;
+    ul {
+        display: flex;
+        gap: 20px;
+        li {
+            padding: 15px 0;
+            
+            a {
+                color: #FFF;
+                text-transform: uppercase;
+            }
+            a:hover {
+                color: rgb(51, 51, 51);
+            }
+        }
+    }
+
+}

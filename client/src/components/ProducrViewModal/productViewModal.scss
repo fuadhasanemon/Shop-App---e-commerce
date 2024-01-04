@@ -1,0 +1,36 @@
+.product-quick-view {
+    display: flex;
+    gap: 20px;
+
+    .product-photo, .product-details {
+        width: 50%;
+    }
+
+    .product-photo {
+        img {
+            width: 100%;
+            border-radius: .5rem;
+        }
+    }
+
+    .view-pricing {
+        display: flex;
+        gap: 10px;
+        font-size: 16px;
+        font-weight: 300;
+    
+        .regular {
+            text-decoration: line-through;
+        }
+    
+        .sale {
+            font-weight: 500;
+        }
+    }
+    
+    .cart-btn {
+        background-color: #E95C18;
+        border-color: #E95C18;
+    }
+}
+
