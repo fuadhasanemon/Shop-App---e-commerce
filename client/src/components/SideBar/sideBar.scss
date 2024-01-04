@@ -1,0 +1,32 @@
+.sidebar-widget {
+    margin-bottom: 20px;
+
+    .widget-title {
+        font-size: 16px;
+        font-weight: 400;
+        text-transform: uppercase;
+    }
+
+    .list li {
+        font-weight: 300;
+        margin-bottom: 5px;
+        font-size: 14px;
+
+        label {
+            display: flex;
+            gap: 5px;
+        }
+    }
+
+    .tags-item {
+        display: flex;
+        gap: 5px;
+        a {
+            padding: 3px 7px;
+            border-radius: .5rem;
+            display: inline-block;
+            color: #FFF;
+            background-color: #E95C18;
+        }
+    }
+}

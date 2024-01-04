@@ -1,0 +1,25 @@
+.pricing {
+    display: flex;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 300;
+
+    .regular {
+        text-decoration: line-through;
+    }
+
+    .sale {
+        font-weight: 500;
+    }
+}
+
+.product-button {
+    button {
+        font-size: 13px;
+    }
+
+    .cart-btn {
+        background-color: #E95C18;
+        border-color: #E95C18;
+    }
+}
