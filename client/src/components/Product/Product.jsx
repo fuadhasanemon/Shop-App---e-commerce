@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Card, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "./product.scss";
 import ProductViewModal from "../ProducrViewModal/ProductViewModal";
 
@@ -12,7 +13,10 @@ const Product = () => {
         <ProductViewModal show={show} onHide={() => setShow(false)} />
 
         <Card>
-          <Card.Img src="https://waltonbd.com/image/catalog/home-page/half-block/nexg-n6-block.jpg"></Card.Img>
+          <Link to={"/ssss"}>
+            <Card.Img src="https://waltonbd.com/image/catalog/home-page/half-block/nexg-n6-block.jpg"></Card.Img>
+          </Link>
+
           <Card.Body>
             <Card.Title>Walton 12</Card.Title>
             <div className="pricing my-2">
