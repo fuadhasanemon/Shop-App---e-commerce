@@ -29,4 +29,26 @@
             background-color: #E95C18;
         }
     }
+
+    .price-search {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+
+        input {
+            width: 35%;
+            padding: 5px;
+            border-radius: .5rem;
+        }
+
+        button {
+           width: 30%;
+           padding: 5px;
+           background-color: #E95C18;
+           border-radius: .5rem;
+           border-color: #E95C18;
+           color: #FFF;
+        }
+    }
 }

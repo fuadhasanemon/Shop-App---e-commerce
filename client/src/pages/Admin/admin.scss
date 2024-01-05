@@ -1,0 +1,66 @@
+.admin-menu {
+    ul {
+        
+        li {
+            background-color: #E95C18;
+            padding: 10px 20px;
+            margin-bottom: 10px;
+            a {
+                color: #ffffff;
+                width: 100%;
+
+            }
+
+            &:hover {
+                background-color: #ebebeb;
+                color: #444;
+            }
+
+            &:hover a {
+                color: #444;
+            }
+        }
+    }
+}
+
+.table-content {
+    .table-content-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        h2 {
+            font-weight: 400;
+            font-size: 30px;
+        }
+
+        button {
+            background-color: #E95C18;
+            border: none;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            color: #ffffff;
+
+            &:hover {
+                background-color: #ebebeb;
+                color: #444;
+            }
+        }
+    }
+}
+
+.button-group {
+    display: flex;
+    gap: 5px;
+
+    button {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+    }
+}
+
+.css-ptkaw2-MuiDataGrid-root .MuiDataGrid-cell:focus-within {
+    outline: none;
+}
