@@ -1,63 +1,17 @@
 import React, { useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import "./brand.scss";
 import { IoIosCreate } from "react-icons/io";
 import BrandModal from "./BrandModal";
-import Box from "@mui/material/Box";
-import { DataGrid } from "@mui/x-data-grid";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-
-const columns = [
-  { field: "id", headerName: "ID", width: 100 },
-  {
-    field: "name",
-    headerName: "Name",
-    type: "text",
-    width: 150,
-    editable: false
-  },
-  {
-    field: "logo",
-    headerName: "Logo",
-    type: "file",
-    width: 150,
-    editable: true
-  },
-  {
-    field: "status",
-    headerName: "Status",
-    type: "text",
-    width: 150,
-    editable: true
-  },
-  {
-    field: "action",
-    headerName: "Action",
-    width: 130,
-    renderCell: params => {
-      return (
-        <div className="button-group">
-          <Button variant="warning">
-            <FaEdit />
-          </Button>
-
-          <Button variant="danger">
-            <MdDelete />
-          </Button>
-        </div>
-      );
-    }
-  }
-];
-
-const rows = [
-  { id: 1, name: "Snow", logo: "", status: "Published" },
-  { id: 2, name: "Snow", logo: "", status: "Published" }
-];
+import { Switch } from "@mui/material";
+import { useSelector } from "react-redux";
 
 const Brand = () => {
   const [modal, setModal] = useState(false);
+
+  const { brands } = useSelector(state => state.shop);
   return (
     <div className="table-content">
       <div className="table-content-header">
@@ -68,22 +22,51 @@ const Brand = () => {
       </div>
 
       <div className="data-table my-3">
-        <Box sx={{ height: "100%", width: "100%" }}>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 5
-                }
-              }
-            }}
-            pageSizeOptions={[5]}
-            checkboxSelection
-            disableRowSelectionOnClick
-          />
-        </Box>
+        <Table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Logo</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[...brands].map(({ name, slug, photo }, index) => {
+              return (
+                <tr className="align-middle" key={index}>
+                  <td>{index + 1}</td>
+                  <td>{name}</td>
+                  <td>
+                    <img
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        objectFit: "cover"
+                      }}
+                      src={`http://localhost:5050/brands/${photo}`}
+                      alt=""
+                    />
+                  </td>
+                  <td>
+                    <Switch /> Published
+                  </td>
+                  <td>
+                    <div className="button-group">
+                      <Button variant="warning">
+                        <FaEdit />
+                      </Button>
+                      <Button variant="danger">
+                        <MdDelete />
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
       </div>
 
       <BrandModal show={modal} onHide={() => setModal(false)} />
