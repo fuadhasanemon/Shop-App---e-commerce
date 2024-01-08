@@ -1,3 +1,4 @@
+import { createSlug } from "../helper/createSlug.js";
 import Brand from "../models/Brand.js";
 
 export const getAllProductBrand = async (req, res, next) => {
@@ -14,10 +15,10 @@ export const getAllProductBrand = async (req, res, next) => {
 
 export const createProductBrand = async (req, res, next) => {
   try {
-    const { name, slug } = req.body;
+    const { name } = req.body;
     const brand = await Brand.create({
       name,
-      slug,
+      slug: createSlug(name),
       photo: req.file.filename
     });
     res.status(200).json({

@@ -83,8 +83,8 @@ const SideBar = () => {
         <h3 className="widget-title">Price search</h3>
         <hr />
         <div className="price-search">
-          <input type="text" placeholder="Min" />
-          <input type="text" placeholder="Max" />
+          <input className="form-control" type="text" placeholder="Min" />
+          <input className="form-control" type="text" placeholder="Max" />
           <button>Search</button>
         </div>
       </div>
