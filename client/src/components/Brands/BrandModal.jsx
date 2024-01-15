@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Button, Form, Modal, ModalBody, ModalHeader } from "react-bootstrap";
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import { createBrand } from "../../redux/shop/actions";
 
@@ -21,7 +20,9 @@ const BrandModal = ({ show, onHide }) => {
     form_data.append("name", input);
     form_data.append("brand-photo", logo);
 
-    dispatch(createBrand(form_data));
+    console.log("Create brand trigger", form_data);
+
+    dispatch(createBrand({ form_data }));
   };
 
   return (
@@ -40,7 +41,7 @@ const BrandModal = ({ show, onHide }) => {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Group className="mb-3" controlId="formBasicLogo">
               <Form.Label>Brand Logo</Form.Label>
               <Form.Control onChange={handleLogoUpload} type="file" />
 

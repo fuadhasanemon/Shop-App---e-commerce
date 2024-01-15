@@ -22,7 +22,7 @@ const Brand = () => {
       </div>
 
       <div className="data-table my-3">
-        <Table>
+        <Table striped>
           <thead>
             <tr>
               <th>#</th>
@@ -33,7 +33,7 @@ const Brand = () => {
             </tr>
           </thead>
           <tbody>
-            {[...brands].map(({ name, slug, photo }, index) => {
+            {brands.map(({ name, slug, photo }, index) => {
               return (
                 <tr className="align-middle" key={index}>
                   <td>{index + 1}</td>
