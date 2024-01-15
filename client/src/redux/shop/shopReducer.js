@@ -4,9 +4,10 @@ import {
   GET_BRAND_REQUEST,
   GET_BRAND_SUCCESS
 } from "./actionTypes.js";
+import { initialState } from "./initState.js";
 
 // create shop reducer
-const shopReducer = (state = 0, { type, payload }) => {
+const shopReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case GET_BRAND_REQUEST:
       return {

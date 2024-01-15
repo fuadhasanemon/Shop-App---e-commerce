@@ -13,7 +13,7 @@ export const getAllBrands = () => async dispatch => {
       type: GET_BRAND_REQUEST
     });
     await axios
-      .get("http://localhost:5050/api/v1/product/brand/")
+      .get("http://localhost:5050/api/v1/product/brand")
       .then(res => {
         dispatch({
           type: GET_BRAND_SUCCESS,
@@ -37,7 +37,7 @@ export const getAllBrands = () => async dispatch => {
 export const createBrand = data => async dispatch => {
   try {
     await axios
-      .post("http://localhost:5050/api/v1/product/brand/", data)
+      .post("http://localhost:5050/api/v1/product/brand", data)
       .then(res => {
         dispatch({
           type: CREATE_BRAND_SUCCESS,
@@ -51,7 +51,6 @@ export const createBrand = data => async dispatch => {
         });
       });
   } catch (error) {
-    console.log(error);
     dispatch({
       type: CREATE_BRAND_FAILED,
       payload: error.response.data.message

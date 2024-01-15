@@ -5,7 +5,7 @@ export const getAllProductBrand = async (req, res, next) => {
   try {
     const brands = await Brand.find();
     res.status(200).json({
-      brands: brands,
+      brands,
       message: "All brands loaded succesfully"
     });
   } catch (error) {
@@ -22,7 +22,7 @@ export const createProductBrand = async (req, res, next) => {
       photo: req.file.filename
     });
     res.status(200).json({
-      brands: brand,
+      brand,
       message: "Brand created succesfully"
     });
   } catch (error) {
