@@ -6,10 +6,37 @@ import BrandModal from "./BrandModal";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { Switch } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteBrand, updateBrandStatus } from "../../redux/shop/actions";
+import swal from "sweetalert";
 
 const Brand = () => {
   const [modal, setModal] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const handleDeleteBrand = id => {
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this imaginary file!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true
+    }).then(willDelete => {
+      if (willDelete) {
+        dispatch(deleteBrand(id));
+        swal("Poof! Your imaginary file has been deleted!", {
+          icon: "success"
+        });
+      } else {
+        swal("Your imaginary file is safe!");
+      }
+    });
+  };
+
+  const handleStatusUpdate = (id, status) => {
+    dispatch(updateBrandStatus({ id, status: !status }));
+  };
 
   const { brands } = useSelector(state => state.shop);
   return (
@@ -33,7 +60,7 @@ const Brand = () => {
             </tr>
           </thead>
           <tbody>
-            {brands.map(({ name, slug, photo }, index) => {
+            {brands.map(({ name, slug, photo, _id, status }, index) => {
               return (
                 <tr className="align-middle" key={index}>
                   <td>{index + 1}</td>
@@ -50,14 +77,20 @@ const Brand = () => {
                     />
                   </td>
                   <td>
-                    <Switch /> Published
+                    <Switch
+                      onChange={() => handleStatusUpdate(_id, status)}
+                      checked={status}
+                    />
                   </td>
                   <td>
                     <div className="button-group">
                       <Button variant="warning">
                         <FaEdit />
                       </Button>
-                      <Button variant="danger">
+                      <Button
+                        variant="danger"
+                        onClick={() => handleDeleteBrand(_id)}
+                      >
                         <MdDelete />
                       </Button>
                     </div>
