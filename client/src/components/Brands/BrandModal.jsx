@@ -20,9 +20,19 @@ const BrandModal = ({ show, onHide }) => {
     form_data.append("name", input);
     form_data.append("brand-photo", logo);
 
-    console.log("Create brand trigger", form_data);
+    try {
+      // Assuming createBrand is an asynchronous function
+      dispatch(createBrand({ form_data }));
 
-    dispatch(createBrand({ form_data }));
+      // Close the modal and reset modal after successful brand creation
+      onHide();
+      e.target.reset();
+      setInput("");
+      setLogo(null);
+    } catch (error) {
+      console.error("Error creating brand:", error);
+      // Handle the error as neededs
+    }
   };
 
   return (

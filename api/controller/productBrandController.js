@@ -56,6 +56,28 @@ export const deleteProductBrand = async (req, res, next) => {
   }
 };
 
+export const statusUpdate = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    const updateStatus = await Brand.findByIdAndUpdate(
+      id,
+      {
+        status
+      },
+      {
+        new: true
+      }
+    );
+    res.status(200).json({
+      brand: updateStatus,
+      message: "Barand status updated succesfully"
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const updateProductBrand = async (req, res, next) => {
   try {
     const { id } = req.params;
