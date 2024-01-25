@@ -11,7 +11,11 @@ import { deleteBrand, updateBrandStatus } from "../../redux/shop/actions";
 import swal from "sweetalert";
 
 const Brand = () => {
-  const [modal, setModal] = useState(false);
+  const [modal, setModal] = useState({
+    show: false,
+    type: "create",
+    dataId: null
+  });
 
   const dispatch = useDispatch();
 
@@ -34,6 +38,10 @@ const Brand = () => {
     });
   };
 
+  const handleEditBrand = id => {
+    setModal({ type: "edit", show: true, dataId: id });
+  };
+
   const handleStatusUpdate = (id, status) => {
     dispatch(updateBrandStatus({ id, status: !status }));
   };
@@ -43,7 +51,16 @@ const Brand = () => {
     <div className="table-content">
       <div className="table-content-header">
         <h2>Brands</h2>
-        <Button variant="info" onClick={() => setModal(true)}>
+        <Button
+          variant="info"
+          onClick={() =>
+            setModal(prevState => ({
+              ...prevState,
+              show: true,
+              type: "create"
+            }))
+          }
+        >
           <span>Create brand</span> <IoIosCreate />
         </Button>
       </div>
@@ -84,7 +101,10 @@ const Brand = () => {
                   </td>
                   <td>
                     <div className="button-group">
-                      <Button variant="warning">
+                      <Button
+                        variant="warning"
+                        onClick={() => handleEditBrand(_id)}
+                      >
                         <FaEdit />
                       </Button>
                       <Button
@@ -102,7 +122,13 @@ const Brand = () => {
         </Table>
       </div>
 
-      <BrandModal show={modal} onHide={() => setModal(false)} />
+      <BrandModal
+        show={modal.show}
+        setModal={setModal}
+        onHide={() => setModal(prevState => ({ ...prevState, show: false }))}
+        type={modal.type}
+        dataId={modal.dataId}
+      />
     </div>
   );
 };
