@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Modal, ModalBody, ModalHeader } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createBrand } from "../../redux/shop/actions";
 
-const BrandModal = ({ show, onHide }) => {
+const BrandModal = ({ show, onHide, setModal, type, dataId }) => {
   const [input, setInput] = useState("");
   const [logo, setLogo] = useState(null);
+  const [edit, setEdit] = useState({
+    name: "",
+    photo: ""
+  });
 
   const dispatch = useDispatch();
+  const { brands } = useSelector(state => state.shop);
 
   const handleLogoUpload = e => {
     setLogo(e.target.files[0]);
@@ -35,41 +40,90 @@ const BrandModal = ({ show, onHide }) => {
     }
   };
 
-  return (
-    <div>
-      <Modal show={show} onHide={onHide} centered>
-        <ModalHeader closeButton>Add new brand</ModalHeader>
+  useEffect(() => {
+    const editData = brands.find(data => data._id === dataId);
+    setEdit(editData);
+  }, [dataId, brands]);
 
-        <ModalBody>
-          <Form onSubmit={handleCreateBrand}>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Brand Name</Form.Label>
-              <Form.Control
-                value={input}
-                onChange={e => setInput(e.target.value)}
-                type="text"
-              />
-            </Form.Group>
+  if (type === "create") {
+    return (
+      <div>
+        <Modal show={show} onHide={onHide} centered>
+          <ModalHeader closeButton>Add new brand</ModalHeader>
 
-            <Form.Group className="mb-3" controlId="formBasicLogo">
-              <Form.Label>Brand Logo</Form.Label>
-              <Form.Control onChange={handleLogoUpload} type="file" />
+          <ModalBody>
+            <Form onSubmit={handleCreateBrand}>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Brand Name</Form.Label>
+                <Form.Control
+                  value={input}
+                  onChange={e => setInput(e.target.value)}
+                  type="text"
+                />
+              </Form.Group>
 
-              <br />
+              <Form.Group className="mb-3" controlId="formBasicLogo">
+                <Form.Label>Brand Logo</Form.Label>
+                <Form.Control onChange={handleLogoUpload} type="file" />
 
-              {logo && (
-                <img width={"100%"} src={URL.createObjectURL(logo)} alt="" />
-              )}
-            </Form.Group>
+                <br />
 
-            <Button variant="primary" type="submit">
-              Add
-            </Button>
-          </Form>
-        </ModalBody>
-      </Modal>
-    </div>
-  );
+                {logo && (
+                  <img width={"100%"} src={URL.createObjectURL(logo)} alt="" />
+                )}
+              </Form.Group>
+
+              <Button variant="primary" type="submit">
+                Add
+              </Button>
+            </Form>
+          </ModalBody>
+        </Modal>
+      </div>
+    );
+  } else if (type === "edit") {
+    return (
+      <div>
+        <Modal show={show} onHide={onHide} centered>
+          <ModalHeader closeButton>Update brand</ModalHeader>
+
+          <ModalBody>
+            <Form onSubmit={handleCreateBrand}>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Brand Name</Form.Label>
+                <Form.Control
+                  value={edit?.name}
+                  onChange={e => setInput(e.target.value)}
+                  type="text"
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicLogo">
+                <Form.Label>Brand Logo</Form.Label>
+                <Form.Control onChange={handleLogoUpload} type="file" />
+
+                <br />
+
+                {logo ? (
+                  <img width={"100%"} src={URL.createObjectURL(logo)} alt="" />
+                ) : (
+                  <img
+                    width={"100%"}
+                    src={`http://localhost:5050/brands/${edit.photo}`}
+                    alt=""
+                  />
+                )}
+              </Form.Group>
+
+              <Button variant="primary" type="submit">
+                Add
+              </Button>
+            </Form>
+          </ModalBody>
+        </Modal>
+      </div>
+    );
+  }
 };
 
 export default BrandModal;
