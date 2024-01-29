@@ -81,13 +81,13 @@ export const statusUpdate = async (req, res, next) => {
 export const updateProductBrand = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { name, slug, photo } = req.body;
+    const { name, photo } = req.body;
     const updateBrand = await Brand.findByIdAndUpdate(
       id,
       {
         name,
-        slug,
-        photo
+        slug: createSlug(name),
+        photo: req.file?.filename ? req.file.filename : photo
       },
       {
         new: true
