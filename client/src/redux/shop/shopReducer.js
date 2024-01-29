@@ -4,7 +4,8 @@ import {
   GET_BRAND_FAILED,
   GET_BRAND_REQUEST,
   GET_BRAND_SUCCESS,
-  UPDATE_BRAND_STATUS_SUCCESS
+  UPDATE_BRAND_STATUS_SUCCESS,
+  UPDATE_BRAND_SUCCESS
 } from "./actionTypes.js";
 import { initialState } from "./initState.js";
 
@@ -51,6 +52,22 @@ const shopReducer = (state = initialState, { type, payload }) => {
         ...state,
         brands: state.brands
       };
+
+    case UPDATE_BRAND_SUCCESS:
+      const updatedBrandIndex = state.brands.findIndex(
+        data => data._id === payload._id
+      );
+
+      if (updatedBrandIndex !== -1) {
+        const updatedBrands = [...state.brands];
+        updatedBrands[updatedBrandIndex] = payload;
+
+        return {
+          ...state,
+          brands: updatedBrands
+        };
+      }
+      return state;
 
     default:
       return state;

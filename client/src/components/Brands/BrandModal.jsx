@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Modal, ModalBody, ModalHeader } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { createBrand } from "../../redux/shop/actions";
+import { createBrand, updateBrand } from "../../redux/shop/actions";
 
 const BrandModal = ({ show, onHide, setModal, type, dataId }) => {
   const [input, setInput] = useState("");
@@ -40,15 +40,41 @@ const BrandModal = ({ show, onHide, setModal, type, dataId }) => {
     }
   };
 
+  const editData = brands.find(data => data._id === dataId);
+
   useEffect(() => {
-    const editData = brands.find(data => data._id === dataId);
     setEdit(editData);
-  }, [dataId, brands]);
+
+    console.log("Edit data", editData);
+  }, [dataId, editData]);
+
+  const handleModalOnHide = () => {
+    onHide();
+    setLogo(null);
+  };
+
+  const handleUpdateBrand = async e => {
+    e.preventDefault();
+
+    const form_data = new FormData();
+    form_data.append("name", edit?.name);
+    form_data.append("photo", edit?.photo);
+    form_data.append("brand-photo", logo);
+    try {
+      dispatch(updateBrand({ data: form_data, id: dataId, setModal }));
+      onHide();
+      e.target.reset();
+      setInput("");
+      setLogo(null);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   if (type === "create") {
     return (
       <div>
-        <Modal show={show} onHide={onHide} centered>
+        <Modal show={show} onHide={handleModalOnHide} centered>
           <ModalHeader closeButton>Add new brand</ModalHeader>
 
           <ModalBody>
@@ -88,12 +114,17 @@ const BrandModal = ({ show, onHide, setModal, type, dataId }) => {
           <ModalHeader closeButton>Update brand</ModalHeader>
 
           <ModalBody>
-            <Form onSubmit={handleCreateBrand}>
+            <Form onSubmit={handleUpdateBrand}>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Brand Name</Form.Label>
                 <Form.Control
                   value={edit?.name}
-                  onChange={e => setInput(e.target.value)}
+                  onChange={e =>
+                    setEdit(prevState => ({
+                      ...prevState,
+                      name: e.target.value
+                    }))
+                  }
                   type="text"
                 />
               </Form.Group>
@@ -107,11 +138,13 @@ const BrandModal = ({ show, onHide, setModal, type, dataId }) => {
                 {logo ? (
                   <img width={"100%"} src={URL.createObjectURL(logo)} alt="" />
                 ) : (
-                  <img
-                    width={"100%"}
-                    src={`http://localhost:5050/brands/${edit.photo}`}
-                    alt=""
-                  />
+                  edit?.photo && (
+                    <img
+                      width={"100%"}
+                      src={`http://localhost:5050/brands/${edit.photo}`}
+                      alt=""
+                    />
+                  )
                 )}
               </Form.Group>
 

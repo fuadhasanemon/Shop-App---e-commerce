@@ -7,7 +7,9 @@ import {
   GET_BRAND_FAILED,
   GET_BRAND_REQUEST,
   GET_BRAND_SUCCESS,
-  UPDATE_BRAND_STATUS_SUCCESS
+  UPDATE_BRAND_FAILED,
+  UPDATE_BRAND_STATUS_SUCCESS,
+  UPDATE_BRAND_SUCCESS
 } from "./actionTypes.js";
 
 export const getAllBrands = () => async dispatch => {
@@ -86,6 +88,62 @@ export const deleteBrand = id => async dispatch => {
     });
   }
 };
+
+// export const updateBrand =
+//   ({ data, id, setModal }) =>
+//   async dispatch => {
+//     try {
+//       await axios
+//         .patch(`http://localhost:5050/api/v1/product/brand/${id}`, data)
+//         .then(res => {
+//           console.log("Action data======>", data);
+//           dispatch({
+//             type: UPDATE_BRAND_SUCCESS,
+//             payload: res.data.brand
+//           });
+//           setModal(prevState => ({ ...prevState, show: false }));
+//         })
+//         .catch(error => {
+//           console.log("Error in the action");
+//           dispatch({
+//             type: UPDATE_BRAND_FAILED,
+//             payload: error.response?.data?.message
+//           });
+//         });
+//     } catch (error) {
+//       dispatch({
+//         type: UPDATE_BRAND_FAILED,
+//         payload: error.response?.data?.message
+//       });
+//     }
+//   };
+
+export const updateBrand =
+  ({ data, id, setModal }) =>
+  async dispatch => {
+    console.log("=====");
+    try {
+      const res = await axios.patch(
+        `http://localhost:5050/api/v1/product/brand/${id}`,
+        data
+      );
+
+      console.log("Action data======>", data);
+      console.log("Res==========", res.data);
+      dispatch({
+        type: UPDATE_BRAND_SUCCESS,
+        payload: res.data.brands
+      });
+
+      setModal(prevState => ({ ...prevState, show: false }));
+    } catch (error) {
+      dispatch({
+        type: UPDATE_BRAND_FAILED,
+        payload:
+          error.response?.data || "An error occurred while updating the brand."
+      });
+    }
+  };
 
 export const updateBrandStatus =
   ({ id, status }) =>
