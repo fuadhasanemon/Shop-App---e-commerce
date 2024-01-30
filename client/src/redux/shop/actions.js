@@ -2,11 +2,16 @@ import axios from "axios";
 import {
   CREATE_BRAND_FAILED,
   CREATE_BRAND_SUCCESS,
+  CREATE_TAG_FAILED,
+  CREATE_TAG_SUCCESS,
   DELETE_BRAND_FAILED,
   DELETE_BRAND_SUCCESS,
   GET_BRAND_FAILED,
   GET_BRAND_REQUEST,
   GET_BRAND_SUCCESS,
+  GET_TAG_FAILED,
+  GET_TAG_REQUEST,
+  GET_TAG_SUCCESS,
   UPDATE_BRAND_FAILED,
   UPDATE_BRAND_STATUS_SUCCESS,
   UPDATE_BRAND_SUCCESS
@@ -168,6 +173,61 @@ export const updateBrandStatus =
     } catch (error) {
       dispatch({
         type: DELETE_BRAND_FAILED,
+        payload: error.response.data.message
+      });
+    }
+  };
+
+export const getAllTags = () => async dispatch => {
+  try {
+    dispatch({
+      type: GET_TAG_REQUEST
+    });
+    await axios
+      .get("http://localhost:5050/api/v1/product/tag")
+      .then(res => {
+        // console.log("resssss====tags====>", res.data.tags);
+        dispatch({
+          type: GET_TAG_SUCCESS,
+          payload: res.data.tags
+        });
+      })
+      .catch(error => {
+        dispatch({
+          type: GET_TAG_FAILED,
+          payload: error.response.data.message
+        });
+      });
+  } catch (error) {
+    dispatch({
+      type: GET_TAG_FAILED,
+      payload: error.response.data.message
+    });
+  }
+};
+
+export const createTag =
+  ({ form_data }) =>
+  async dispatch => {
+    try {
+      await axios
+        .post("http://localhost:5050/api/v1/product/tag", form_data)
+        .then(res => {
+          console.log("trigger create tag", res.data);
+          dispatch({
+            type: CREATE_TAG_SUCCESS,
+            payload: res.data.tag
+          });
+        })
+        .catch(error => {
+          dispatch({
+            type: CREATE_TAG_FAILED,
+            payload: error.response.data.message
+          });
+        });
+    } catch (error) {
+      dispatch({
+        type: CREATE_TAG_FAILED,
         payload: error.response.data.message
       });
     }
