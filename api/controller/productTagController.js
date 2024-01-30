@@ -1,3 +1,4 @@
+import { createSlug } from "../helper/createSlug.js";
 import Tag from "../models/Tag.js";
 
 export const getAllProductTags = async (req, res, next) => {
@@ -14,10 +15,10 @@ export const getAllProductTags = async (req, res, next) => {
 
 export const createProductTags = async (req, res, next) => {
   try {
-    const { name, slug } = req.body;
+    const { name } = req.body;
     const data = await Tag.create({
       name,
-      slug
+      slug: createSlug(name)
     });
     res.status(200).json({
       tags: data,
