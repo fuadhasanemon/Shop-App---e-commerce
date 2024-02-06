@@ -3,6 +3,7 @@ import {
   CREATE_TAG_FAILED,
   CREATE_TAG_SUCCESS,
   DELETE_BRAND_SUCCESS,
+  DELETE_TAG_SUCCESS,
   GET_BRAND_FAILED,
   GET_BRAND_REQUEST,
   GET_BRAND_SUCCESS,
@@ -10,7 +11,8 @@ import {
   GET_TAG_REQUEST,
   GET_TAG_SUCCESS,
   UPDATE_BRAND_STATUS_SUCCESS,
-  UPDATE_BRAND_SUCCESS
+  UPDATE_BRAND_SUCCESS,
+  UPDATE_TAG_SUCCESS
 } from "./actionTypes.js";
 import { initialState } from "./initState.js";
 
@@ -102,11 +104,27 @@ const shopReducer = (state = initialState, { type, payload }) => {
         tags: [...state.tags, payload]
       };
 
-    case CREATE_TAG_FAILED:
+    case DELETE_TAG_SUCCESS:
       return {
         ...state,
-        tags: []
+        tags: state.tags.filter(data => data._id !== payload)
       };
+
+    case UPDATE_TAG_SUCCESS:
+      const updatedTagIndex = state.tags.findIndex(
+        data => data._id === payload._id
+      );
+
+      if (updatedTagIndex !== -1) {
+        const updatedTag = [...state.tags];
+        updatedTag[updatedTagIndex] = payload;
+
+        return {
+          ...state,
+          tags: updatedTag
+        };
+      }
+      return state;
 
     default:
       return state;

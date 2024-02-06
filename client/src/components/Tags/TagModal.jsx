@@ -1,22 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Modal, ModalBody, ModalHeader } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { createTag, updateBrand } from "../../redux/shop/actions";
+import { createTag, updateTag } from "../../redux/shop/actions";
 
-const BrandModal = ({ show, onHide, setModal, type, dataId }) => {
+const TagModal = ({ show, onHide, setModal, type, dataId }) => {
   const [input, setInput] = useState("");
-  const [logo, setLogo] = useState(null);
   const [edit, setEdit] = useState({
-    name: "",
-    photo: ""
+    name: ""
   });
 
   const dispatch = useDispatch();
   const { tags } = useSelector(state => state.shop);
-
-  const handleLogoUpload = e => {
-    setLogo(e.target.files[0]);
-  };
 
   const handleCreateTag = async e => {
     e.preventDefault();
@@ -24,18 +18,17 @@ const BrandModal = ({ show, onHide, setModal, type, dataId }) => {
     const form_data = new FormData();
     form_data.append("name", input);
 
-    console.log("form data of tags", form_data);
+    console.log("type of form data", typeof form_data);
 
     try {
-      // Assuming createBrand is an asynchronous function
-      await dispatch(createTag({ form_data }));
+      dispatch(createTag({ form_data }));
 
       // Close the modal and reset modal after successful tag creation
       onHide();
       e.target.reset();
       setInput("");
     } catch (error) {
-      console.error("Error creating brand:", error);
+      console.error("Error creating tag:", error);
       // Handle the error as neededs
     }
   };
@@ -48,7 +41,6 @@ const BrandModal = ({ show, onHide, setModal, type, dataId }) => {
 
   const handleModalOnHide = () => {
     onHide();
-    setLogo(null);
   };
 
   const handleUpdateTag = async e => {
@@ -56,14 +48,12 @@ const BrandModal = ({ show, onHide, setModal, type, dataId }) => {
 
     const form_data = new FormData();
     form_data.append("name", edit?.name);
-    form_data.append("photo", edit?.photo);
-    form_data.append("brand-photo", logo);
+
     try {
-      dispatch(updateBrand({ data: form_data, id: dataId, setModal }));
+      dispatch(updateTag({ data: form_data, id: dataId, setModal }));
       onHide();
       e.target.reset();
       setInput("");
-      setLogo(null);
     } catch (error) {
       console.log(error);
     }
@@ -73,7 +63,7 @@ const BrandModal = ({ show, onHide, setModal, type, dataId }) => {
     return (
       <div>
         <Modal show={show} onHide={handleModalOnHide} centered>
-          <ModalHeader closeButton>Add new brand</ModalHeader>
+          <ModalHeader closeButton>Add new tag</ModalHeader>
 
           <ModalBody>
             <Form onSubmit={handleCreateTag}>
@@ -127,4 +117,4 @@ const BrandModal = ({ show, onHide, setModal, type, dataId }) => {
   }
 };
 
-export default BrandModal;
+export default TagModal;

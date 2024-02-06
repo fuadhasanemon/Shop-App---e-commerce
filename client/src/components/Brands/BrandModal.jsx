@@ -26,7 +26,6 @@ const BrandModal = ({ show, onHide, setModal, type, dataId }) => {
     form_data.append("brand-photo", logo);
 
     try {
-      // Assuming createBrand is an asynchronous function
       dispatch(createBrand({ form_data }));
 
       // Close the modal and reset modal after successful brand creation
