@@ -7,7 +7,11 @@ import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { Switch } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteBrand, updateBrandStatus } from "../../redux/shop/actions";
+import {
+  deleteBrand,
+  deleteTag,
+  updateBrandStatus
+} from "../../redux/shop/actions";
 import swal from "sweetalert";
 
 const Tags = () => {
@@ -19,7 +23,7 @@ const Tags = () => {
 
   const dispatch = useDispatch();
 
-  const handleDeleteBrand = id => {
+  const handleDeleteTag = id => {
     swal({
       title: "Are you sure?",
       text: "Once deleted, you will not be able to recover this imaginary file!",
@@ -28,7 +32,7 @@ const Tags = () => {
       dangerMode: true
     }).then(willDelete => {
       if (willDelete) {
-        dispatch(deleteBrand(id));
+        dispatch(deleteTag(id));
         swal("Poof! Your imaginary file has been deleted!", {
           icon: "success"
         });
@@ -38,7 +42,7 @@ const Tags = () => {
     });
   };
 
-  const handleEditBrand = id => {
+  const handleEditTag = id => {
     setModal({ type: "edit", show: true, dataId: id });
   };
 
@@ -94,13 +98,13 @@ const Tags = () => {
                     <div className="button-group">
                       <Button
                         variant="warning"
-                        onClick={() => handleEditBrand(_id)}
+                        onClick={() => handleEditTag(_id)}
                       >
                         <FaEdit />
                       </Button>
                       <Button
                         variant="danger"
-                        onClick={() => handleDeleteBrand(_id)}
+                        onClick={() => handleDeleteTag(_id)}
                       >
                         <MdDelete />
                       </Button>

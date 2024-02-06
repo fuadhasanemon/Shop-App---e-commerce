@@ -6,6 +6,8 @@ import {
   CREATE_TAG_SUCCESS,
   DELETE_BRAND_FAILED,
   DELETE_BRAND_SUCCESS,
+  DELETE_TAG_FAILED,
+  DELETE_TAG_SUCCESS,
   GET_BRAND_FAILED,
   GET_BRAND_REQUEST,
   GET_BRAND_SUCCESS,
@@ -14,7 +16,9 @@ import {
   GET_TAG_SUCCESS,
   UPDATE_BRAND_FAILED,
   UPDATE_BRAND_STATUS_SUCCESS,
-  UPDATE_BRAND_SUCCESS
+  UPDATE_BRAND_SUCCESS,
+  UPDATE_TAG_FAILED,
+  UPDATE_TAG_SUCCESS
 } from "./actionTypes.js";
 
 export const getAllBrands = () => async dispatch => {
@@ -126,15 +130,12 @@ export const deleteBrand = id => async dispatch => {
 export const updateBrand =
   ({ data, id, setModal }) =>
   async dispatch => {
-    console.log("=====");
     try {
       const res = await axios.patch(
         `http://localhost:5050/api/v1/product/brand/${id}`,
         data
       );
 
-      console.log("Action data======>", data);
-      console.log("Res==========", res.data);
       dispatch({
         type: UPDATE_BRAND_SUCCESS,
         payload: res.data.brands
@@ -211,9 +212,11 @@ export const createTag =
   async dispatch => {
     try {
       await axios
-        .post("http://localhost:5050/api/v1/product/tag", form_data)
+        .post("http://localhost:5050/api/v1/product/tag", {
+          name: form_data.get("name")
+        })
         .then(res => {
-          console.log("trigger create tag", res.data);
+          console.log("trigger create tag", res);
           dispatch({
             type: CREATE_TAG_SUCCESS,
             payload: res.data.tag
@@ -228,6 +231,88 @@ export const createTag =
     } catch (error) {
       dispatch({
         type: CREATE_TAG_FAILED,
+        payload: error.response.data.message
+      });
+    }
+  };
+
+export const deleteTag = id => async dispatch => {
+  try {
+    await axios
+      .delete(`http://localhost:5050/api/v1/product/tag/${id}`)
+      .then(res => {
+        dispatch({
+          type: DELETE_TAG_SUCCESS,
+          payload: id
+        });
+      })
+      .catch(error => {
+        dispatch({
+          type: DELETE_TAG_FAILED,
+          payload: error.response.data.message
+        });
+      });
+  } catch (error) {
+    dispatch({
+      type: DELETE_TAG_FAILED,
+      payload: error.response.data.message
+    });
+  }
+};
+
+// export const updateTag =
+//   ({ data, id, setModal }) =>
+//   async dispatch => {
+//     try {
+//       console.log("Update action dataId and data", id, data.get("name"));
+//       let dataUpdated = data.get("name");
+//       const res = await axios.patch(
+//         `http://localhost:5050/api/v1/product/tag/${id}`,
+//         data.get("name")
+//       );
+
+//       console.log("update tag====>", res.data);
+
+//       dispatch({
+//         type: UPDATE_TAG_SUCCESS,
+//         payload: res.data.tags
+//       });
+
+//       setModal(prevState => ({ ...prevState, show: false }));
+//     } catch (error) {
+//       dispatch({
+//         type: UPDATE_TAG_FAILED,
+//         payload:
+//           error.response?.data || "An error occurred while updating the tag."
+//       });
+//     }
+//   };
+
+export const updateTag =
+  ({ data, id, setModal }) =>
+  async dispatch => {
+    try {
+      const name = data.get("name");
+      await axios
+        .put(`http://localhost:5050/api/v1/product/tag/${id}`, {
+          name
+        })
+        .then(res => {
+          dispatch({
+            type: UPDATE_TAG_SUCCESS,
+            payload: res.data.data
+          });
+          setModal(prevState => ({ ...prevState, show: false }));
+        })
+        .catch(error => {
+          dispatch({
+            type: UPDATE_TAG_FAILED,
+            payload: error.response.data.message
+          });
+        });
+    } catch (error) {
+      dispatch({
+        type: UPDATE_TAG_FAILED,
         payload: error.response.data.message
       });
     }

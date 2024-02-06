@@ -15,13 +15,14 @@ export const getAllProductTags = async (req, res, next) => {
 
 export const createProductTags = async (req, res, next) => {
   try {
+    console.log(req.body);
     const { name } = req.body;
-    const data = await Tag.create({
+    const tag = await Tag.create({
       name,
       slug: createSlug(name)
     });
     res.status(200).json({
-      tags: data,
+      tag,
       message: "Tag created successfully"
     });
   } catch (error) {
@@ -44,12 +45,13 @@ export const deleteProductTags = async (req, res, next) => {
 export const updateProductTag = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { name, slug } = req.body;
+    const { name } = req.body;
+
     const data = await Tag.findByIdAndUpdate(
       id,
       {
         name,
-        slug
+        slug: createSlug(name)
       },
       {
         new: true
