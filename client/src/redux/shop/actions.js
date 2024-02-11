@@ -2,6 +2,8 @@ import axios from "axios";
 import {
   CREATE_BRAND_FAILED,
   CREATE_BRAND_SUCCESS,
+  CREATE_CATEGORY_FAILED,
+  CREATE_CATEGORY_SUCCESS,
   CREATE_TAG_FAILED,
   CREATE_TAG_SUCCESS,
   DELETE_BRAND_FAILED,
@@ -11,6 +13,9 @@ import {
   GET_BRAND_FAILED,
   GET_BRAND_REQUEST,
   GET_BRAND_SUCCESS,
+  GET_CATEGORY_FAILED,
+  GET_CATEGORY_PENDING,
+  GET_CATEGORY_SUCCESS,
   GET_TAG_FAILED,
   GET_TAG_REQUEST,
   GET_TAG_SUCCESS,
@@ -313,6 +318,61 @@ export const updateTag =
     } catch (error) {
       dispatch({
         type: UPDATE_TAG_FAILED,
+        payload: error.response.data.message
+      });
+    }
+  };
+
+export const getAllCategories = () => async dispatch => {
+  try {
+    dispatch({
+      type: GET_CATEGORY_PENDING
+    });
+    await axios
+      .get("http://localhost:5050/api/v1/product/category")
+      .then(res => {
+        console.log("action category===>", res.data.categories);
+
+        dispatch({
+          type: GET_CATEGORY_SUCCESS,
+          payload: res.data.categories
+        });
+      })
+      .catch(error => {
+        dispatch({
+          type: GET_CATEGORY_SUCCESS,
+          payload: error.response.data.message
+        });
+      });
+  } catch (error) {
+    dispatch({
+      type: GET_CATEGORY_FAILED,
+      payload: error.response.data.message
+    });
+  }
+};
+
+export const createCategory =
+  ({ form_data }) =>
+  async dispatch => {
+    try {
+      await axios
+        .post("http://localhost:5050/api/v1/product/category", form_data)
+        .then(res => {
+          dispatch({
+            type: CREATE_CATEGORY_SUCCESS,
+            payload: res.data.category
+          });
+        })
+        .catch(error => {
+          dispatch({
+            type: CREATE_CATEGORY_FAILED,
+            payload: error.response.data.message
+          });
+        });
+    } catch (error) {
+      dispatch({
+        type: CREATE_CATEGORY_FAILED,
         payload: error.response.data.message
       });
     }
