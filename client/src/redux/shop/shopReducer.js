@@ -1,5 +1,6 @@
 import {
   CREATE_BRAND_SUCCESS,
+  CREATE_CATEGORY_SUCCESS,
   CREATE_TAG_FAILED,
   CREATE_TAG_SUCCESS,
   DELETE_BRAND_SUCCESS,
@@ -7,6 +8,9 @@ import {
   GET_BRAND_FAILED,
   GET_BRAND_REQUEST,
   GET_BRAND_SUCCESS,
+  GET_CATEGORY_FAILED,
+  GET_CATEGORY_PENDING,
+  GET_CATEGORY_SUCCESS,
   GET_TAG_FAILED,
   GET_TAG_REQUEST,
   GET_TAG_SUCCESS,
@@ -125,6 +129,33 @@ const shopReducer = (state = initialState, { type, payload }) => {
         };
       }
       return state;
+
+    case GET_CATEGORY_PENDING:
+      return {
+        ...state,
+        loading: true
+      };
+
+    case GET_CATEGORY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        categories: [...payload]
+      };
+
+    case GET_CATEGORY_FAILED:
+      return {
+        ...state,
+        loading: false,
+        categories: [],
+        error: payload
+      };
+
+    case CREATE_CATEGORY_SUCCESS:
+      return {
+        ...state,
+        categories: [...state.categories, payload]
+      };
 
     default:
       return state;
