@@ -16,6 +16,9 @@ import {
   GET_CATEGORY_FAILED,
   GET_CATEGORY_PENDING,
   GET_CATEGORY_SUCCESS,
+  GET_PRODUCT_FAILED,
+  GET_PRODUCT_PENDING,
+  GET_PRODUCT_SUCCESS,
   GET_TAG_FAILED,
   GET_TAG_REQUEST,
   GET_TAG_SUCCESS,
@@ -331,8 +334,6 @@ export const getAllCategories = () => async dispatch => {
     await axios
       .get("http://localhost:5050/api/v1/product/category")
       .then(res => {
-        console.log("action category===>", res.data.categories);
-
         dispatch({
           type: GET_CATEGORY_SUCCESS,
           payload: res.data.categories
@@ -340,7 +341,7 @@ export const getAllCategories = () => async dispatch => {
       })
       .catch(error => {
         dispatch({
-          type: GET_CATEGORY_SUCCESS,
+          type: GET_CATEGORY_FAILED,
           payload: error.response.data.message
         });
       });
@@ -377,3 +378,32 @@ export const createCategory =
       });
     }
   };
+
+export const getAllProducts = () => async dispatch => {
+  try {
+    dispatch({
+      type: GET_PRODUCT_PENDING
+    });
+    await axios
+      .get("http://localhost:5050/api/v1/product/")
+      .then(res => {
+        console.log("action category===>", res.data.products);
+
+        dispatch({
+          type: GET_PRODUCT_SUCCESS,
+          payload: res.data.products
+        });
+      })
+      .catch(error => {
+        dispatch({
+          type: GET_PRODUCT_FAILED,
+          payload: error.response.data.message
+        });
+      });
+  } catch (error) {
+    dispatch({
+      type: GET_PRODUCT_FAILED,
+      payload: error.response.data.message
+    });
+  }
+};

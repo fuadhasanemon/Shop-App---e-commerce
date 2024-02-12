@@ -26,6 +26,7 @@ app.use(express.static("api/public"));
 app.use("/api/v1/product", productCategoryRoute);
 app.use("/api/v1/product", productBrandRoute);
 app.use("/api/v1/product", productTageRoute);
+app.use("/api/v1/product", productRoute);
 
 // Environvent variable
 const PORT = process.env.PORT || 9090;

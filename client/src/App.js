@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import {
   getAllBrands,
   getAllCategories,
+  getAllProducts,
   getAllTags
 } from "./redux/shop/actions";
 
@@ -14,6 +15,7 @@ function App() {
     dispatch(getAllBrands());
     dispatch(getAllTags());
     dispatch(getAllCategories());
+    dispatch(getAllProducts());
   }, [dispatch]);
   return <RouterProvider router={publicRoute} />;
 }
