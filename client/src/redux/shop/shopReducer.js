@@ -11,6 +11,9 @@ import {
   GET_CATEGORY_FAILED,
   GET_CATEGORY_PENDING,
   GET_CATEGORY_SUCCESS,
+  GET_PRODUCT_FAILED,
+  GET_PRODUCT_PENDING,
+  GET_PRODUCT_SUCCESS,
   GET_TAG_FAILED,
   GET_TAG_REQUEST,
   GET_TAG_SUCCESS,
@@ -154,7 +157,29 @@ const shopReducer = (state = initialState, { type, payload }) => {
     case CREATE_CATEGORY_SUCCESS:
       return {
         ...state,
+        loading: false,
         categories: [...state.categories, payload]
+      };
+
+    case GET_PRODUCT_PENDING:
+      return {
+        ...state,
+        loading: true
+      };
+
+    case GET_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        products: [...payload],
+        loading: false,
+        message: "Product loaded"
+      };
+
+    case GET_PRODUCT_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: payload
       };
 
     default:
