@@ -64,9 +64,16 @@ const Products = () => {
                     <td>{index + 1}</td>
                     <td>{name}</td>
                     <td>
-                      `${sale_price} ? <span>${regular_price}</span>{" "}
-                      <span>${sale_price}</span> : <span>${regular_price}</span>
-                      `
+                      {sale_price ? (
+                        <>
+                          <span className="regular_price">
+                            BDT {regular_price}
+                          </span>
+                          <span> BDT {sale_price}</span>
+                        </>
+                      ) : (
+                        <span>BDT {regular_price}</span>
+                      )}
                     </td>
                     <td>
                       <img
